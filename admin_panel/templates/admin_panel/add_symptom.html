@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавление симптома{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    {% if message %}
+    <div class="alert alert-primary" role="alert">
+        {{ message }}
+    {% endif %}
+    </div>
+    <h2>Добавить симптом</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="symptom_name" class="form-label">Название симптома</label>
+            <input type="text" class="form-control" id="symptom_name" name="symptom_name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+    <a href="{% url 'admin_panel' %}" class="btn btn-secondary mt-3">Назад</a>
+</div>
+{% endblock %}

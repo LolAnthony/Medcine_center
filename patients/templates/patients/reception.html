@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Прием{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group position-sticky" style="top: 0;">
+                <a href="#patient-info" class="list-group-item list-group-item-action">Данные о пациенте</a>
+                <a href="#current-symptoms" class="list-group-item list-group-item-action">Симптомы текущего приема</a>
+                <a href="#add-symptom" class="list-group-item list-group-item-action">Добавить симптом</a>
+                <a href="#current-diagnosis" class="list-group-item list-group-item-action">Диагнозы текущего приема</a>
+                <a href="#add-diagnosis" class="list-group-item list-group-item-action">Добавить диагноз</a>
+                {% if receptions %}
+                <a href="#previous-receptions" class="list-group-item list-group-item-action">Предыдущие приемы пациента</a>
+                {% endif %}
+                <a href="{% url 'close_reception' %}" class="btn btn-danger">Закрыть прием</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div id="patient-info">
+                <h1>Данные о пациенте</h1>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Фамилия:</strong> {{ patient.0 }}</li>
+                    <li class="list-group-item"><strong>Имя:</strong> {{ patient.1 }}</li>
+                    <li class="list-group-item"><strong>Отчество:</strong> {{ patient.2 }}</li>
+                    <li class="list-group-item"><strong>Дата рождения:</strong> {{ patient.3 }}</li>
+                    <li class="list-group-item"><strong>Пол:</strong>{% if patient.4 %} Мужской{% else %} Женский{% endif %}</li>
+                </ul>
+            </div>
+
+            <div id="current-symptoms" class="mt-4">
+                <h2>Симптомы текущего приема</h2>
+                <ul class="list-group">
+                {% if not symptoms %}
+                    <p>Вы еще не добавили ни одного симптома</p>
+                {% endif %}
+                    {% for symptom in symptoms %}
+                        <li class="list-group-item">
+                            <strong>Название симптома:</strong> {{ symptom.0 }}<br>
+                            <strong>Комментарий:</strong> {{ symptom.1 }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div id="add-symptom" class="mt-4">
+                <h2>Добавить симптом</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="symptom_id">Выберите класс симптома:</label>
+                        <select name="symptom_id" id="symptom_id" class="form-control">
+                            {% for symptom in def_symptoms %}
+                                <option value="{{ symptom.0 }}">{{ symptom.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="symptom_comment">Комментарий:</label>
+                        <textarea name="symptom_comment" id="symptom_comment" class="form-control" rows="3" required maxlength="150"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </form>
+            </div>
+
+            <div id="current-diagnosis" class="mt-4">
+                <h2>Диагнозы текущего приема</h2>
+                {% if not diagnosis %}
+                    <p>Вы еще не добавили ни одного диагноза</p>
+                {% endif %}
+                <ul class="list-group">
+                    {% for diag in diagnosis %}
+                        <li class="list-group-item">
+                            <strong>Название диагноза:</strong> {{ diag.0 }}<br>
+                            <strong>Комментарий:</strong> {{ diag.1 }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div id="add-diagnosis" class="mt-4">
+                <h2>Добавить диагноз</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="diagnos_id">Выберите класс диагноза:</label>
+                        <select name="diagnos_id" id="diagnos_id" class="form-control">
+                            {% for diag in def_diagnosis %}
+                                <option value="{{ diag.0 }}">{{ diag.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="diagnos_comment">Комментарий:</label>
+                        <textarea name="diagnos_comment" id="diagnos_comment" class="form-control" rows="3" required maxlength="150"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </form>
+            </div>
+            {% if receptions %}
+            <div id="previous-receptions" class="mt-4">
+                <h2>Предыдущие приемы пациента</h2>
+                <ul class="list-group">
+                    {% for rec in receptions %}
+                        <li class="list-group-item">
+                            <strong>Дата приема:</strong> {{ rec.0 }}<br>
+                            <strong>Принимающий врач</strong><br>
+                            <strong>Фамилия:</strong> {{ rec.1 }}<br>
+                            <strong>Имя:</strong> {{ rec.2 }}<br>
+                            <strong>Отчество:</strong> {{ rec.3 }}<br>
+                            <strong>Отделение:</strong> {{ rec.4 }}<br>
+                            <a href="{% url 'check_previous_reception' rec_id=rec.5 %}"><button class="btn btn-secondary">Просмотреть</button></a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

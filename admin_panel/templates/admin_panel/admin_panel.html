@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Админ панель
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="text-center">Админ Панель</h1>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6">
+                <div class="text-center mb-3">
+                    <h5>Добавить:</h5>
+                </div>
+                <div class="text-center">
+                    <a href="{% url 'add_symptom' %}" class="btn btn-primary btn-block">Симптом</a>
+                </div><br>
+                <div class="text-center">
+                    <a href="{% url 'add_diagnos' %}" class="btn btn-primary btn-block">Диагноз</a>
+                </div><br>
+                <div class="text-center">
+                    <a href="{% url 'add_otd' %}" class="btn btn-primary btn-block">Отделение</a>
+                </div><br>
+                <div class="text-center">
+                    <a href="{% url 'add_pers' %}" class="btn btn-primary btn-block">Пользователя</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Прошлый прием{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="text-center">Данные о пациенте</h1>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Фамилия:</strong> {{ patient.0 }}</li>
+                <li class="list-group-item"><strong>Имя:</strong> {{ patient.1 }}</li>
+                <li class="list-group-item"><strong>Отчество:</strong> {{ patient.2 }}</li>
+                <li class="list-group-item"><strong>Дата рождения:</strong> {{ patient.3 }}</li>
+                <li class="list-group-item"><strong>Пол:</strong>{% if patient.4 %} Мужской{% else %} Женский{% endif %}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8 mx-auto">
+            <h2 class="text-center">Данные о приеме</h2>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Дата приема:</strong> {{ reception.0 }}</li>
+                <li class="list-group-item"><strong>Фамилия врача:</strong> {{ reception.1 }}</li>
+                <li class="list-group-item"><strong>Имя врача:</strong> {{ reception.2 }}</li>
+                <li class="list-group-item"><strong>Отчество врача:</strong> {{ reception.3 }}</li>
+                <li class="list-group-item"><strong>Отделение:</strong> {{ reception.4 }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8 mx-auto">
+            <h2 class="text-center">Симптомы приема</h2>
+            <ul class="list-group">
+                {% if not symptoms %}
+                <p class="text-center">Симптомы не были отмечены на данном приеме</p>
+                {% endif %}
+                {% for symptom in symptoms %}
+                <li class="list-group-item">{{ symptom.0 }}: {{ symptom.1 }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8 mx-auto">
+            <h2 class="text-center">Диагнозы приема</h2>
+            {% if not diagnosis %}
+            <p class="text-center">Диагнозы не были отмечены на данном приеме</p>
+            {% endif %}
+            <ul class="list-group">
+                {% for diagnosis in diagnosis %}
+                <li class="list-group-item">{{ diagnosis.0 }}: {{ diagnosis.1 }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8 mx-auto text-center">
+            <a href="{% url 'reception' %}" class="btn btn-primary">Назад</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

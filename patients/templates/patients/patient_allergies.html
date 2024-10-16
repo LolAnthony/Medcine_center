@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Аллергии пациента
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Аллергии пациента</h2>
+        <hr>
+        {% if patient_allergies %}
+            <ul class="list-group">
+                {% for allergy in patient_allergies %}
+                    <li class="list-group-item">
+                        <strong>Причина:</strong> {{ allergy.1 }} <br>
+                        <strong>Комментарий:</strong> {{ allergy.0 }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Пациент не имеет аллергий.</p>
+        {% endif %}
+
+        <hr>
+        <h3>Добавить аллергию</h3>
+        <form method="POST" action="{% url 'patients_allergies' pat=pat_id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="allergy_id">Выберите аллергию:</label>
+                <select class="form-control" id="allergy_id" name="allergy_id" required>
+                    {% for allergy in allergy_list %}
+                        <option value="{{ allergy.0 }}">{{ allergy.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment">Комментарий:</label>
+                <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+    <br/>
+    <a href="{% url 'patients' %}" class="btn btn-secondary">Назад</a>
+    </div>
+{% endblock %}

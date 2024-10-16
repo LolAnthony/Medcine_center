@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавление отделения{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    {% if message %}
+    <div class="alert alert-primary" role="alert">
+        {{ message }}
+    {% endif %}
+    </div>
+    <h2>Добавить отделение</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="department_name" class="form-label">Название отделения</label>
+            <input type="text" class="form-control" id="otd" name="otd" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+    <a href="{% url 'admin_panel' %}" class="btn btn-secondary mt-3">Назад</a>
+</div>
+{% endblock %}
